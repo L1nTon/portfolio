@@ -20,6 +20,10 @@ body {
     line-height: 1.6;
     overflow-x: hidden;
 }
+body::-webkit-scrollbar {
+  height: 0px;
+  width: 0px;
+}
 
 canvas {
     position: fixed;
@@ -38,9 +42,12 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 30px 0;
+    padding: 20px;
     position: relative;
     z-index: 10;
+    background: #111827;
+    width: 100%;
+    position: fixed;
 }
 
 .logo {
@@ -571,11 +578,7 @@ footer {
 
 @media (max-width: 576px) {
     header {
-        flex-direction: column;
         text-align: center;
-    }
-    nav {
-        margin-top: 20px;
     }
     .hero {
         text-align: center;
@@ -583,4 +586,188 @@ footer {
     .hero h1 {
         font-size: 2.2rem;
     }
+    .menu-wrapper
+    {
+        flex-direction: column;
+    }
+    .menu-item
+    {
+        margin: 0 !important;
+    }
+    .menu-title
+    {
+        font-size: 2em;
+    }
+    .menu-scroll-container
+    {
+        height: 100% !important;
+    }
+    .menu-wrapper
+    {
+        bottom: 50% !important;
+        transform: translateY(50%);
+        height: auto;
+    }
+    .bg-text
+    {
+        font-size: 13em !important;
+        line-height: 0.7em !important;
+        letter-spacing: -37px;
+        font-weight: 600;
+    }
+}
+
+
+.burger-menu {
+  cursor: pointer;
+  font-size: 24px;
+}
+
+.background-container {
+    width: 100%;
+    height: 100vh !important;
+  flex: 1;
+  background-size: cover;
+  background-position: center;
+  position: fixed;
+}
+
+.menu-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+.menu-container.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.menu-container.active .menu-item
+{
+  transform: translateY(0);
+}
+.menu-scroll-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  height: 120px;
+  z-index: 2;
+}
+
+.menu-wrapper {
+  display: flex;
+  position: absolute;
+  bottom: 0;
+  transition: transform 0.1s ease;
+  padding: 20px 0;
+  min-width: max-content;
+}
+
+.menu-item:not(.active):hover .menu-title
+{
+  color: #aaa;
+}
+
+.menu-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 40px;
+  text-decoration: none;
+  color: #888;
+  transition: color 0.3s ease;
+  min-width: max-content;
+  cursor: pointer;
+  transition: 0.3s;
+  transform: translateY(100px);
+}
+
+.menu-item.active {
+  color: white;
+}
+.menu-item:nth-child(1)
+{
+  margin-left: 200px;
+}
+.menu-item:last-child
+{
+  margin-right: 200px;
+}
+
+.menu-number {
+  width: 100%;
+  font-size: 14px;
+/*  margin-bottom: 10px;*/
+}
+
+.menu-title {
+  font-size: 3em;
+  font-weight: bold;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: 0.2s;
+}
+
+.nav-indicator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  width: 200px;
+  background-color: white;
+  transition: transform 0.3s ease;
+}
+
+.close-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  color: white;
+  cursor: pointer;
+  font-size: 24px;
+  z-index: 3;
+}
+
+@media (max-width: 768px) {
+  .menu-item {
+    margin: 0 20px;
+    min-width: 120px;
+  }
+  
+  .menu-title {
+    font-size: 25px;
+  }
+}
+
+.bg-text
+{
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    font-size: 13em;
+    font-weight: 600;
+    line-height: 1.2em;
+    letter-spacing: -37px;
+    display: flex;
+    color: #072945;
+    flex-direction: column;
+    justify-content: center;
+    text-transform: uppercase;
+}
+.bg-text span
+{
+    font-weight: 600;
+}
+.bg-text span.active
+{
+    color: #2196f3;
 }

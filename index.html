@@ -2,6 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Креативное портфолио | Дизайнер & Разработчик</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
     <link rel="stylesheet" href="assets/css/style.css">
@@ -9,19 +10,43 @@
 <body>
     <canvas id="background"></canvas>
     
-    <div class="container">
-        <header>
-            <a href="#" class="logo"><span>{</span> Dior_Dev <span>}</span></a>
-            <nav>
-                <ul>
-                    <li><a href="#about">Обо мне</a></li>
-                    <li><a href="#portfolio">Портфолио</a></li>
-                    <li><a href="#skills">Навыки</a></li>
-                    <li><a href="#contact">Контакты</a></li>
-                </ul>
-            </nav>
-        </header>
-        
+    <div class="background-container">
+    <!-- Menu overlay -->
+        <div class="menu-container" id="menuContainer">
+            <div class="close-button" id="closeButton">✕</div>
+
+            <div class="menu-scroll-container" id="menuScrollContainer">
+                <div class="menu-wrapper" id="menuWrapper">
+                    <a class="menu-item active" data-index="1" href="#" data-text="Обо мне">
+                        <div class="menu-title">Обо мне</div>
+                    </a>
+                    <a class="menu-item" data-index="3" href="#portfolio" data-text="Портфолио">
+                        <div class="menu-title">Портфолио</div>
+                    </a>
+                    <a class="menu-item" data-index="4" href="#skills" data-text="Навыки">
+                        <div class="menu-title">Навыки</div>
+                    </a>
+                    <a class="menu-item" data-index="5" href="#contact" data-text="Контакты">
+                        <div class="menu-title">Контакты</div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="bg-text" id="bg-text">
+                <span class="active">Обо мне</span>
+                <span>Портфолио</span>
+                <span>Навыки</span>
+                <span>Контакты</span>
+            </div>
+        </div>
+    </div>
+    <header>
+        <a href="#" class="logo"><span>{</span> Dior_Dev <span>}</span></a>
+        <nav>
+            <div class="burger-menu" id="burgerMenu">☰</div>
+        </nav>
+    </header> 
+    <div class="container section">       
         <section class="hero">
             <div class="hero-content">
                 <h1>Привет, я <span class="highlight">Фронтенд разработчик</span></h1>

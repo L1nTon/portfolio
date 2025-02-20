@@ -135,3 +135,182 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
     // Reset form
     this.reset();
 });
+
+
+
+// MENU
+const burgerMenu = document.getElementById('burgerMenu');
+const closeButton = document.getElementById('closeButton');
+const menuContainer = document.getElementById('menuContainer');
+const menuWrapper = document.getElementById('menuWrapper');
+const menuScrollContainer = document.getElementById('menuScrollContainer');
+const menuItems = document.querySelectorAll('.menu-item');
+const bgTexts = document.querySelectorAll('.bg-text span')
+
+// Variables
+let isMenuOpen = false;
+let menuWidth = 0;
+let containerWidth = 0;
+let maxScroll = 0;
+let activeItemIndex = 0;
+
+// Calculate sizes
+function calculateSizes() {
+  menuWidth = menuWrapper.offsetWidth;
+  containerWidth = menuScrollContainer.offsetWidth;
+  maxScroll = menuWidth - containerWidth;
+  
+  // If menu is smaller than container, center it
+  if (menuWidth <= containerWidth) {
+    menuWrapper.style.left = `${(containerWidth - menuWidth) / 2}px`;
+    maxScroll = 0;
+  } else {
+    menuWrapper.style.left = '0px';
+  }
+  }
+
+// Apply a non-linear speed curve to the mouse position
+function applySpeedCurve(mouseXPercent) {
+  // Define regions of different speeds
+  // Middle region (30%-70%): slower movement
+  // Edge regions (0-30% and 70-100%): faster movement
+  
+  if (mouseXPercent < 0.3) {
+    // Left edge - accelerated movement
+    // Map 0-0.3 to 0-0.4 (faster at edges)
+    return (mouseXPercent / 0.3) * 0.4;
+  } else if (mouseXPercent > 0.7) {
+    // Right edge - accelerated movement
+    // Map 0.7-1.0 to 0.6-1.0 (faster at edges)
+    return 0.6 + ((mouseXPercent - 0.7) / 0.3) * 0.4;
+  } else {
+    // Middle section - slower movement
+    // Map 0.3-0.7 to 0.4-0.6 (slower in middle)
+    return 0.4 + ((mouseXPercent - 0.3) / 0.4) * 0.2;
+  }
+}
+
+// Initialize menu
+function initMenu() {
+  calculateSizes();
+  window.addEventListener('resize', calculateSizes);
+  
+  // Toggle menu
+  burgerMenu.addEventListener('click', () => {
+    document.body.style.overflowY = 'hidden'
+    isMenuOpen = true;
+    menuContainer.classList.add('active');
+    document.querySelector('.background-container').style.zIndex = '99';
+    calculateSizes();
+  });
+  
+  closeButton.addEventListener('click', () => {
+    document.body.style.overflowY = 'auto'
+    isMenuOpen = false;
+    menuContainer.classList.remove('active');
+    document.querySelector('.background-container').style.zIndex = '0';
+  });
+  
+  // Menu item click
+  menuItems.forEach((item, index) => {
+    item.addEventListener('click', () => {
+      activeItemIndex = index;
+      updateActiveItem();
+      closeButton.click();
+    });
+  });
+  
+  // Track mouse movement across entire menu container
+  menuContainer.addEventListener('mousemove', (e) => {
+    if (!isMenuOpen || maxScroll <= 0) return;
+    
+    // Get mouse X position relative to viewport width
+    const viewportWidth = window.innerWidth;
+    const mouseXPercent = e.clientX / viewportWidth;
+    
+    // Apply non-linear speed curve
+    const adjustedPercent = applySpeedCurve(mouseXPercent);
+    
+    // Calculate scroll position with the adjusted percentage
+    const scrollPosition = adjustedPercent * maxScroll;
+
+    // Apply scroll position
+    menuWrapper.style.transform = `translateX(-${scrollPosition}px)`;
+    
+    // Find the most centered item and make it active
+    // updateActiveItemBasedOnPosition(scrollPosition);
+  });
+}
+
+// Update active item based on current scroll position
+function updateActiveItemBasedOnPosition(scrollPosition) {
+  const containerCenter = containerWidth / 2;
+  let closestItem = 0;
+  let closestDistance = Infinity;
+  
+  menuItems.forEach((item, index) => {
+    const itemCenter = item.offsetLeft + (item.offsetWidth / 2) - scrollPosition;
+    const distanceToCenter = Math.abs(itemCenter - containerCenter);
+    
+    if (distanceToCenter < closestDistance) {
+      closestDistance = distanceToCenter;
+      closestItem = index;
+    }
+  });
+  
+  if (activeItemIndex !== closestItem) {
+    activeItemIndex = closestItem;
+    updateActiveItem();
+  }
+}
+
+// Update active menu item
+function updateActiveItem() {
+  menuItems.forEach((item, index) => {
+    if (index === activeItemIndex) {
+      item.classList.add('active');
+    } else {
+      item.classList.remove('active');
+    }
+  });
+
+  bgTexts.forEach((item, index) => {
+    if (index === activeItemIndex) {
+      item.classList.add('active');
+    } else {
+      item.classList.remove('active');
+    }
+  })
+  
+}
+
+// Initialize
+window.addEventListener('DOMContentLoaded', initMenu);
+
+const allMenuItems = document.querySelectorAll('.menu-item')
+
+if (allMenuItems) {
+  allMenuItems.forEach((e, i) => {
+    e.style.transitionDelay = `${0.025*i}s`;
+  })
+}
+
+const pageSections = document.querySelectorAll('.section')
+
+window.addEventListener('scroll', function(){
+  let valY = window.scrollY;
+
+  pageSections.forEach((e, i) => {
+    let contTop = e.offsetTop
+    if (valY >= contTop) {
+      allMenuItems[i-1]?.classList.remove('active')
+      bgTexts[i-1]?.classList.remove('active')
+      allMenuItems[i].classList.add('active')
+      bgTexts[i].classList.add('active')
+    }else
+    {
+      allMenuItems[i].classList.remove('active')
+      bgTexts[i].classList.remove('active')
+    }
+  })
+})
