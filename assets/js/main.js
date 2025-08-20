@@ -285,7 +285,10 @@ function updateActiveItem() {
 }
 
 // Initialize
-window.addEventListener('DOMContentLoaded', initMenu);
+window.addEventListener('DOMContentLoaded', ()=>{
+  initMenu()
+  evalHolst()
+});
 
 const allMenuItems = document.querySelectorAll('.menu-item')
 
@@ -314,3 +317,46 @@ window.addEventListener('scroll', function(){
     }
   })
 })
+
+
+const holstForSpans = document.getElementById("skills");
+const elemTop = holstForSpans.offsetTop;
+
+function evalHolst() {
+  let width = Math.floor(holstForSpans.offsetWidth / 25);
+  let height = Math.floor(holstForSpans.offsetHeight / 25);
+  let holst = document.createElement("div");
+  holst.classList.add("holst");
+
+  for (let i = 0; i < width * height; i++) {
+    let dot = document.createElement("span");
+    dot.addEventListener('click', setRandomColor);
+    dot.classList.add("dot", "active"); // добавляем active
+    holst.appendChild(dot);
+  }
+
+  holstForSpans.appendChild(holst);
+}
+
+function startDisappearAnimation(){
+    const dots = document.querySelectorAll(".dot");
+    dots.forEach(dot => {
+      const delay = Math.random() * 2000; // до 3 сек
+      setTimeout(() => {
+        dot.classList.remove("active");
+      }, delay);
+    });
+}
+
+function setRandomColor(e) {
+  // const dot = e.target; // тот элемент, по которому кликнули
+  const color = '#' + Math.floor(Math.random() * 16777215).toString(16);
+  holstForSpans.style.setProperty('--dot-color', color);
+}
+
+
+window.onscroll = function(e){
+  let Y = window.scrollY;
+  if(Y+(window.innerHeight/2) > elemTop) startDisappearAnimation();
+}
+// evalHolst();
