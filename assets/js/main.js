@@ -331,7 +331,7 @@ function evalHolst() {
   for (let i = 0; i < width * height; i++) {
     let dot = document.createElement("span");
     dot.addEventListener('click', setRandomColor);
-    dot.classList.add("dot", "active"); // добавляем active
+    dot.classList.add("dot"); // добавляем active
     holst.appendChild(dot);
   }
 
